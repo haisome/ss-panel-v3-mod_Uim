@@ -12,6 +12,7 @@ use App\Models\Relay;
 use App\Services\Gateway\ChenPay;
 use App\Utils\Hash;
 use App\Utils\Tools;
+use App\Utils\Discord;
 use App\Services\Config;
 
 use App\Utils\GA;
@@ -29,8 +30,6 @@ class XCat
     public function boot()
     {
         switch ($this->argv[1]) {
-            case("install"):
-                return $this->install();
             case("alipay"):
                 return (new ChenPay())->AliPayListen();
             case("wxpay"):
@@ -39,6 +38,8 @@ class XCat
                 return $this->createAdmin();
             case("resetTraffic"):
                 return $this->resetTraffic();
+            case("setDiscord"):
+                return Discord::set();
             case("setTelegram"):
                 return $this->setTelegram();
             case("initQQWry"):
@@ -75,12 +76,12 @@ class XCat
                 return Job::DailyJob();
             case("checkjob"):
                 return Job::CheckJob();
-            case("syncduoshuo"):
-                return Job::SyncDuoshuo();
             case("userga"):
                 return Job::UserGa();
             case("backup"):
-                return Job::backup();
+                return Job::backup(false);
+			case("backupfull"):
+				return Job::backup(true);
             case("initdownload"):
                 return $this->initdownload();
             case("updatedownload"):
@@ -92,7 +93,11 @@ class XCat
 	        case("resetAllPort"):
                 return $this->resetAllPort();
 			case("update"):
-			    return Update::update();
+			    return Update::update($this);
+            case ("sendDailyUsageByTG"):
+                return $this->sendDailyUsageByTG();
+			case('npmbuild'):
+				return $this->npmbuild();
 			default:
                 return $this->defaultAction();
         }
@@ -103,6 +108,7 @@ class XCat
         echo(PHP_EOL."用法： php xcat [选项]".PHP_EOL);
 		echo("常用选项:".PHP_EOL);
 		echo("  createAdmin - 创建管理员帐号".PHP_EOL);
+		echo("  setDiscord - 设置 Discord 机器人".PHP_EOL);
 		echo("  setTelegram - 设置 Telegram 机器人".PHP_EOL);
 		echo("  cleanRelayRule - 清除所有中转规则".PHP_EOL);
 		echo("  resetPort - 重置单个用户端口".PHP_EOL);
@@ -126,12 +132,12 @@ class XCat
             $rule->port = $user->port;
             $rule->save();
         }
-		
+
 		if ($user->save()) {
             echo "重置成功!\n";
 		}
     }
-	
+
     public function resetAllPort()
     {
         $users = User::all();
@@ -161,11 +167,6 @@ class XCat
                 $rule->delete();
             }
         }
-    }
-
-    public function install()
-    {
-        echo "x cat will install ss-panel v3...../n";
     }
 
     public function initdownload()
@@ -214,14 +215,10 @@ class XCat
             $user->node_speedlimit=0;
             $user->theme=Config::get('theme');
 
-
-
             $ga = new GA();
             $secret = $ga->createSecret();
             $user->ga_token=$secret;
             $user->ga_enable=0;
-
-
 
             if ($user->save()) {
                 echo "Successful/添加成功!\n";
@@ -249,31 +246,19 @@ class XCat
         return "reset traffic successful";
     }
 
-
     public function setTelegram()
     {
         $bot = new \TelegramBot\Api\BotApi(Config::get('telegram_token'));
         if ($bot->setWebhook(Config::get('baseUrl')."/telegram_callback?token=".Config::get('telegram_request_token')) == 1) {
-            echo("设置成功！");
+            echo("设置成功！".PHP_EOL);
         }
     }
 
     public function initQQWry()
     {
         echo("downloading....");
-        $copywrite = file_get_contents("https://github.com/esdeathlove/qqwry-download/raw/master/copywrite.rar");
-        $newmd5 = md5($copywrite);
-        file_put_contents(BASE_PATH."/storage/qqwry.md5", $newmd5);
-        $qqwry = file_get_contents("https://github.com/esdeathlove/qqwry-download/raw/master/qqwry.rar");
+        $qqwry = file_get_contents("https://qqwry.mirror.noc.one/QQWry.Dat");
         if ($qqwry != "") {
-            $key = unpack("V6", $copywrite)[6];
-            for ($i=0; $i<0x200; $i++) {
-                $key *= 0x805;
-                $key ++;
-                $key = $key & 0xFF;
-                $qqwry[$i] = chr(ord($qqwry[$i]) ^ $key);
-            }
-            $qqwry = gzuncompress($qqwry);
             $fp = fopen(BASE_PATH."/storage/qqwry.dat", "wb");
             if ($fp) {
                 fwrite($fp, $qqwry);
@@ -282,4 +267,29 @@ class XCat
             echo("finish....");
         }
     }
+    public function sendDailyUsageByTG()
+    {
+        $bot = new \TelegramBot\Api\BotApi(Config::get('telegram_token'));
+        $users = User::where('telegram_id',">",0)->get();
+        foreach ($users as $user){
+            $reply_message ="您当前的流量状况：
+今日已使用 " . $user->TodayusedTraffic() . " " . number_format(($user->u + $user->d - $user->last_day_t) / $user->transfer_enable * 100, 2) . "%
+今日之前已使用 " . $user->LastusedTraffic() . " " . number_format($user->last_day_t / $user->transfer_enable * 100, 2) . "%
+未使用 " . $user->unusedTraffic() . " " . number_format(($user->transfer_enable - ($user->u + $user->d)) / $user->transfer_enable * 100, 2) . "%
+					                        ";
+            try{
+                $bot->sendMessage($user->get_user_attributes("telegram_id"), $reply_message , $parseMode = null, $disablePreview = false, $replyToMessageId = null);
+
+            } catch (\TelegramBot\Api\HttpException $e){
+                echo 'Message: 用户: '.$user->get_user_attributes("user_name")." 删除了账号或者屏蔽了宝宝";
+            }
+        }
+    }
+
+	public function npmbuild(){
+		chdir(BASE_PATH.'/uim-index-dev');
+		system('npm install');
+		system('npm run build');
+		system('cp -u ../public/vuedist/index.html ../resources/views/material/index.tpl');
+	}
 }

@@ -1,5 +1,467 @@
+/* 卡片式商店样式 */
+
+.ui-switch {
+	display: flex;
+	flex-direction: row-reverse;
+}
+.ui-switch.node-switch {
+	position: absolute;
+	right: 2.5em;
+	top: 1.5em;
+	z-index: 1;
+}
+
+.switch-btn {
+	width: 50%;
+	box-sizing: border-box;
+}
+
+.ui-switch a {
+	color: #000;
+	display: inline-block;
+	padding: 0 10px;
+}
+
+.ui-switch div.switch-btn:first-of-type a {
+	border-radius: 0 15px 15px 0;
+}
+.ui-switch div.switch-btn:first-of-type a:hover {
+	border-radius: 0 5px 5px 0;
+	transition-duration: 0.4s;	
+}
+
+.ui-switch div.switch-btn:last-of-type a {
+	border-radius: 15px 0 0 15px;
+}
+.ui-switch div.switch-btn:last-of-type a:hover {
+	border-radius: 5px 0 0 5px;
+	transition-duration: 0.4s;	
+}
+
+.ui-switch a:hover {
+	color: white;
+	background: gray;
+}
+
+.ui-switch a i {
+	position: relative;
+	top: 3px;
+}
+
+.ui-switch .card,.ui-switch .card-inner {
+	margin: 0;
+}
+
+.shop-flex,.label-flex,.shop-drop {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	opacity: 1;
+}
+
+.shop-flex .shop-price::before {
+    content: '¥';
+    font-size: 1.5rem;
+    position: relative;
+    bottom: .4rem;
+    right: .1rem;
+}
+
+.shop-table,.shop-flex {
+	opacity: 1;
+	display: none;
+	/* display:flex;原本的display方式 */
+	/* display:flex; */
+}
+
+.shop-table {
+    margin-top: 14px;
+    position: relative;
+}
+.shop-table .card {
+    width: 100%;
+    margin: 10px 0 0 0;
+    padding: 14px 1em;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    grid-area: main;
+}
+.shop-table .shop-btn {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 0 0 10px 10px;
+    padding: 8px 2em;
+    grid-area: button;
+}
+
+.shop-drop {
+    grid-area: drop;
+    background: white;
+    box-shadow: 0 0px 0 #e5e5e5, 0 2px 5px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.05);
+}
+
+.shop-table .shop-name {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    color: #3b5473;
+}
+.shop-table,.shop-table .card {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.shop-table .card-tag {
+    margin-right: 8px;
+}
+
+.shop-table .card>div {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 80%;
+    align-items: center;
+}
+.shop-table .card>div:last-of-type {
+    flex-basis: 10%;
+}
+
+.shop-table span {
+    font-size: 18px;
+    margin: 2px 8px 0 8px;
+}
+
+.shop-gridarea {
+    display: grid;
+    width: 100%;
+    position: relative;
+    transition: .3s all;
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+    "main"
+    "drop"
+    "button"
+}
+.shop-drop .card-tag {
+    flex-basis: 49%;
+    margin: 3px 0 3px 0;
+    text-align: center;
+}
+.shop-flex .card {
+	width: 24%;
+	text-align: center;
+	min-height: 380px;
+}
+.shop-flex .card-main {
+    position: relative;
+    padding-top: 1.3em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.shop-flex .card-main>div {
+    flex-basis: 100%;
+}
+
+.shop-name,.shop-price {
+    padding: .4em 0;
+}
+.shop-price {
+	color: #3b5473;
+	font-size: 2.75rem;
+}
+.shop-price code {
+	font-size: 24px;
+	background: none;
+	font-style: italic;
+	color: #ffa100;
+}
+ 
+.shop-content>div {
+    margin-top: .6em;
+    flex-basis: 49%;
+}
+
+.shop-table .card i {
+    transform: rotate(0deg);
+}
+.shop-table .card i.arrow-rotate {
+    transform: rotate(180deg);
+}
+
+.shop-content {
+	margin-top: 2em;
+    font-size: 13px;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+.shop-content-left {
+    text-align: left;
+    padding-left: 3.5em;
+    color: #3b5473;
+    font-size: 1rem;
+}
+.shop-content-right {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #95aac9;
+}
+.shop-content span {
+    font-size: .8rem;
+    color: #3b5473;
+    margin-left: .2rem;
+}
+
+.shop-cube {
+    margin-top: 2em;
+}
+.shop-name,.shop-tat {
+	margin-top: .3em;
+    font-size: 1.2rem;
+    color: #95aac9;
+    font-weight: bolder;
+}
+.shop-tat {
+    margin: 0;
+}
+.shop-tat span:first-of-type:after {
+    content: ' G';
+}
+.shop-tat span:last-of-type:after {
+    content: ' 天';
+}
+.shop-tat span:after {
+    font-size: .85rem;
+}
+.shop-cube,.shop-content {
+    display: flex;
+    justify-content: space-around;
+}
+.shop-cube>div{
+    flex-basis: 33.333333333%;
+}
+.cube-title {
+    color: #95aac9;
+    font-size: .5rem;
+}
+.cube-detail {
+    font-size: 1.25rem;
+}
+.cube-detail span {
+    font-size: .75rem;
+}
+
+.shop-content-extra {
+    margin-top: 1.5em;
+    font-size: 1.1rem;
+}
+.shop-content-extra>div {
+    margin-top: .4em;
+    letter-spacing: 2px;
+    position: relative;
+    right: .3em;
+    min-height: 20px;
+}
+
+.shop-btn {
+	margin-top: 3em;
+	padding: 10px 2em;
+	flex-basis: 70%;
+    margin-bottom: 2.5em;
+    align-self: flex-end;
+}
+
+.flex-fix3,.flex-fix4 {
+    width: 24%;
+}
+
+.page-course img {
+	max-width: 60%;
+}
+
+@media screen and (max-width: 1600px) {
+	.shop-flex .card,.flex-fix3 {
+		width: 32%;
+	}
+	.flex-fix4 {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 1440px) {
+	.shop-flex .card {
+		width: 48%;
+	}
+	.page-course img {
+		max-width: 80%;
+	}
+}
+
+@media screen and (max-width: 715px) {
+	.shop-flex .card {
+		width: 100%;
+	}
+	.page-course img {
+		max-width: 100%;
+	}
+}
+
+@media screen and (max-width:400px) {
+	.nodemain {
+		max-width: 240px;
+    }
+    .shop-table .card-tag,.shop-table span {
+        flex-basis: 40%;
+        text-align: center;
+        margin: 5px 8px 0 0; 
+    }
+    .shop-table .shop-name {
+        flex-basis: 100%;
+    }
+    .shop-drop .card-tag {
+    flex-basis: 49%;
+    margin: 5px 0;
+    }
+    .shop-content-left {
+        padding-left: 2.5em;
+    }
+    .shop-content span {
+        margin-left: 0;
+    }
+}
+
+/* 面板原样式 */
+.pagination {
+    display:inline-block;
+    padding-left:0;
+    margin:20px 0;
+    border-radius:4px
+}
+.pagination>li {
+    display:inline
+}
+.pagination>li>a,.pagination>li>span {
+    position:relative;
+    float:left;
+    padding:6px 12px;
+    margin-left:-1px;
+    line-height:1.42857143;
+    color:#337ab7;
+    text-decoration:none;
+    background-color:#fff;
+    border:1px solid #ddd
+}
+.pagination>li:first-child>a,.pagination>li:first-child>span {
+    margin-left:0;
+    border-top-left-radius:4px;
+    border-bottom-left-radius:4px
+}
+.pagination>li:last-child>a,.pagination>li:last-child>span {
+    border-top-right-radius:4px;
+    border-bottom-right-radius:4px
+}
+.pagination>li>a:focus,.pagination>li>a:hover,.pagination>li>span:focus,.pagination>li>span:hover {
+    color:#23527c;
+    background-color:#eee;
+    border-color:#ddd
+}
+.pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover {
+    z-index:2;
+    color:#fff;
+    cursor:default;
+    background-color:#337ab7;
+    border-color:#337ab7
+}
+.pagination>.disabled>a,.pagination>.disabled>a:focus,.pagination>.disabled>a:hover,.pagination>.disabled>span,.pagination>.disabled>span:focus,.pagination>.disabled>span:hover {
+    color:#777;
+    cursor:not-allowed;
+    background-color:#fff;
+    border-color:#ddd
+}
+.pagination-lg>li>a,.pagination-lg>li>span {
+    padding:10px 16px;
+    font-size:18px
+}
+.pagination-lg>li:first-child>a,.pagination-lg>li:first-child>span {
+    border-top-left-radius:6px;
+    border-bottom-left-radius:6px
+}
+.pagination-lg>li:last-child>a,.pagination-lg>li:last-child>span {
+    border-top-right-radius:6px;
+    border-bottom-right-radius:6px
+}
+.pagination-sm>li>a,.pagination-sm>li>span {
+    padding:5px 10px;
+    font-size:12px
+}
+.pagination-sm>li:first-child>a,.pagination-sm>li:first-child>span {
+    border-top-left-radius:3px;
+    border-bottom-left-radius:3px
+}
+.pagination-sm>li:last-child>a,.pagination-sm>li:last-child>span {
+    border-top-right-radius:3px;
+    border-bottom-right-radius:3px
+}
+.pager {
+    padding-left:0;
+    margin:20px 0;
+    text-align:center;
+    list-style:none
+}
+.pager li {
+    display:inline
+}
+.pager li>a,.pager li>span {
+    display:inline-block;
+    padding:5px 14px;
+    background-color:#fff;
+    border:1px solid #ddd;
+    border-radius:15px
+}
+.pager li>a:focus,.pager li>a:hover {
+    text-decoration:none;
+    background-color:#eee
+}
+.pager .next>a,.pager .next>span {
+    float:right
+}
+.pager .previous>a,.pager .previous>span {
+    float:left
+}
+.pager .disabled>a,.pager .disabled>a:focus,.pager .disabled>a:hover,.pager .disabled>span {
+    color:#777;
+    cursor:not-allowed;
+    background-color:#fff
+}
+
+.pagination>li>a,.pagination>li>span {
+  border: 1px solid white;
+}
+.pagination>li.active>a {
+  background: #13c2c2;
+  color: #fff;
+}
+
+.pagination>li>a {
+  background: white;
+  color: #000;
+}
+
+.pagination > .disabled > span {
+  border-color: #fff;
+}
+
+.pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover {
+    color: #fff;
+    background-color: #54aff9;
+    border-color: #54aff9;
+}
+
 .ui-card-wrap:after,.ui-picker-lib:after {
     clear: both
+}
+.menu-content .nav ul .a, .menu-content .nav ul a {
+    transition: .3s all;
 }
 
 body {
@@ -290,6 +752,34 @@ ul.dropdown-menu {
     min-width: 130px;
 }
 
+.waves-attach.waves-circle.waves-light.waves-effect .waves-wrap {
+    border-radius: 10px;
+}
+
+.btn:active,.fbtn:active {
+    transform: translate(3px,3px);
+}
+.shop-table .btn.shop-btn:active {
+    transform: scale3d(1.05,1.05,1.05);
+
+}
+
+.modal-inner p {
+    word-break: break-word;
+}
+
+.form-control-guide {
+    margin: .3em 0 0 0;
+    font-size: 12px;
+    color: #399AF2;
+}
+.form-control-guide i {
+    font-size: 18px;
+    position: relative;
+    top: .25em;
+    margin-right: .2em;
+}
+
 /* 卡片节点 */
 
 .nodelist {
@@ -315,6 +805,23 @@ ul.dropdown-menu {
 .card-row,.node-table,.node-fade,.shop-flex,.shop-table,.node-cardgroup {
 	transition-duration: .2s;
 	transition-property: all;
+}
+
+.card.node-table {
+    min-height: 75px;
+}
+
+.node-table .avatar.avatar-sm span {
+    top: .4rem;
+    position: relative;
+    font-size: 20px;
+    color: white;
+}
+.node-table .avatar.avatar-sm.nodeonline span {
+    top: .25rem;
+}
+.node-table .avatar.avatar-sm.nodeoffline span {
+    left: .05rem
 }
 
 .node-card {
@@ -454,7 +961,7 @@ div.nodetitle:first-of-type>a {
     text-align: center;
     display: inline-block;
 }
-.nodetitle>a,.nodetitle a i,.arrow-rotate {
+.nodetitle>a,.nodetitle a i,.arrow-rotate,.shop-table .card i {
     transition: .3s all;
 }
 
@@ -501,21 +1008,13 @@ div.nodetitle:first-of-type>a {
 }
 
 .node-tip {
-	position: fixed;
-	top: -20vh;
-	margin-left: auto;
-	margin-right: auto;
-	left: 0;
-	right: 0;
 	max-width: 350px;
-	background: white;
-	z-index: -1;
 	padding: 20px;
 	border-radius: 20px;
-	opacity: 0;
 	box-shadow: 0 0 7px 0 gray;
-	transition-duration: .5s;
-	transition-property: all;
+}
+.node-tip.cust-modelin {
+    transform: translate3d(0,14rem,0);
 }
 .nodetip-table {
 	flex-wrap: wrap;
@@ -539,14 +1038,7 @@ div.nodetitle:first-of-type>a {
 .tipmiddle {
 	margin-bottom: 10px
 }
-.tip-down {
-	opacity: 1;
-	top: 70px;
-	transition-duration: .5s;
-	transition-property: all;
-	transition-timing-function: ease-out;
-	/* z-index: 3; */
-}
+
 .tiphidden {
 	position: fixed;
 	background: gray;
@@ -593,7 +1085,7 @@ div.nodetitle:first-of-type>a {
 }
 .user-info .nodetype {
     font-size: 1.25rem;
-    color: black;
+    color: #525252;
 }
 .user-info .nodestatus>div {
     width: 54px;
@@ -613,7 +1105,7 @@ div.nodetitle:first-of-type>a {
     display: block;
     text-decoration: none;
     font-size: 14px;
-    color: #383838;
+    color: #525252;
     padding: 1px 0;
 }
 .user-info .nodeinfo i {
@@ -621,33 +1113,138 @@ div.nodetitle:first-of-type>a {
     position: relative;
     top: 1px;
 }
-a.card-tag {
+/* 仿iview标签 */
+a.card-tag,.card-tag {
     font-size: 12px;
     text-decoration: none;
     padding: 1px 6px 0;
     border-radius: 3px;
     border: 1px solid;
+    height: 23px;
 }
-a.tag-orange {
+.card-tag:hover {
+    opacity: .85;
+}
+a.tag-orange,.tag-orange {
     background: #fff2e8;
     color: #fa541c;
     border-color: #ffd591;
 }
-a.tag-green {
+a.tag-green,.tag-green {
     background: #f6ffed;
     color: #52c41a;
     border-color: #b7eb8f;
 }
+a.tag-black,.tag-black {
+    background: #f7f7f7;
+    color: #515a6e;
+    border-color: #a6a7a9;
+}
+a.tag-gold,.tag-gold {
+    background: #fffbe6;
+    color: #faad14;
+    border-color: #ffe58f;
+}
+a.tag-red,.tag-red {
+    background: #fff1f0;
+    color: #f5222d;
+    border-color: #ffa39e;
+}
+a.tag-blue,.tag-blue {
+    background: #e6f7ff;
+    color: #1890ff;
+    border-color: #91d5ff;
+}
+a.tag-geekblue,.tag-geekblue {
+    background: #f0f5ff;
+    color: #2f54eb;
+    border-color: #adc6ff;
+}
+a.tag-cyan,.tag-cyan {
+    background: #e6fffb;
+    color: #13c2c2;
+    border-color: #87e8de;
+}
+a.tag-purple,.tag-purple {
+    background: #f9f0ff;
+    color: #722ed1;
+    border-color: #d3adf7;
+}
+a.tag-volcano,.tag-volcano {
+    background: #fff2e8;
+    color: #fa541c;
+    border-color: #ffbb96;
+}
+a.tag-lime,.tag-lime {
+    background: #fcffe6;
+    color: #a0d911;
+    border-color: #eaff8f;
+}
+a.tag-magenta,.tag-magenta {
+    background: #fff0f6;
+    color: #eb2f96;
+    border-color: #ffadd2;
+}
 
-.card-invite .form-group-label {
+.form-group-label {
     margin-bottom: 16px;
 }
 
-@media screen and (max-width:400px) {
-	.nodemain {
-		max-width: 240px;
-	}
+/* 弹出层插件 */
+.cust-mask {
+    background: black;
+    opacity: 0;
+    z-index: 5;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: .3s all;
 }
+.cust-model {
+    display: none;
+    position: fixed;
+    top: -10em;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    transition: .3s all;
+    background: white;
+    z-index: 6;
+}
+.cust-maskfade {
+    opacity: 0.4;
+}
+.cust-modelin {
+    opacity: 1;
+    transform: translate3d(0,2em,0);
+}
+.fade-delay {
+    transition-delay: .3s
+}
+/* 下拉菜单插件 */
+
+.dropdown-area {
+    height: 0;
+    opacity: 0;
+    transform: scale3d(1,0,1);
+    padding: 0 1.5em;
+    transition: .3s all;
+    transform-origin: top;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.dropdown-area.dropdown-active {
+    transform: scale3d(1,1,1);
+    opacity: 1;
+    padding: 1.5em 1.5em;
+}
+
 
 @media screen and (max-width:320px) {
 	.card-heading {
@@ -660,8 +1257,12 @@ a.tag-green {
         width: 160px;
     }
     .nodetitle a span {
-        font-size: 18px;
-        top: .9em;
+        font-size: 16px;
+        top: 1em;
+    }
+    .nodetitle a i {
+        font-size: 22px;
+        top: .7em;
     }
     .nodename {
         font-size: 14px;
@@ -673,6 +1274,56 @@ a.tag-green {
     }
     .card-inner {
         margin: 24px 13px;
+    }
+    .card-table>.table-responsive {
+        margin-left: -13px;
+        margin-right: -13px;
+    }
+}
+
+@media only screen and (min-width:480px) {
+    .shop-table .card {
+        flex-basis: 80%;
+        border-radius: 10px 0 0 10px;
+    }
+    .shop-table .shop-btn {
+        border-radius: 0 30px 30px 0;
+        flex-basis: 20%;
+        margin-top: 10px;
+        padding: 16px 2em 16px 1.5em;
+    }
+    .shop-table .shop-btn:hover {
+        border-radius: 0 10px 10px 0;
+    }
+    .shop-table .card>div:last-of-type {
+        flex-basis: 2%;
+    }
+   
+    .shop-gridarea {
+        width: 100%;
+        grid-template-columns: 80% 20%;
+        grid-template-rows: auto auto;
+        grid-template-areas: 
+        "main button"
+        "drop block"
+    }
+    .shop-drop {
+        border-radius: 10px;
+        box-shadow: 0 0px 0 #e5e5e5, 0 0 15px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.05);
+    }
+    .shop-drop .card-tag {
+        font-size: 16px;
+        height: 26px;
+        padding: 3px 6px 0;
+    }
+    .node-tip.cust-modelin {
+        transform: translate3d(0,15rem,0);
+    }
+    .dropdown-area.dropdown-active {
+        margin: .5em 0 1.5em 0;
+    }
+    .dropdown-area {
+        transition: .3s all;
     }
 }
 
@@ -690,7 +1341,7 @@ a.tag-green {
 	.nodetitle {
 		grid-column-end: 3;
 		grid-column-start: 1;
-	}
+    }
 }
 
 @media only screen and (min-width:992px) {
@@ -714,7 +1365,8 @@ a.tag-green {
 		grid-column-end: 4;
 		grid-column-start: 1;
     }
-    .card-invite {
-        min-height: 266px;
+    .shop-gridarea {
+        width: 100%;
+        grid-template-columns: 87% 13%;
     }
 }

@@ -9,12 +9,7 @@ use App\Utils\DatatablesHelper;
 
 class Update
 {
-	public static function update()
-	{
-		Update::migrateConfig();
-	}
-
-    public static function migrateConfig()
+	public static function update($xcat)
     {
         global $System_Config;
 	    $copy_result=copy(BASE_PATH."/config/.config.php",BASE_PATH."/config/.config.php.bak");
@@ -25,6 +20,16 @@ class Update
 			echo('备份失败，迁移终止'.PHP_EOL);
 			return false;
 		}
+
+		echo(PHP_EOL);
+
+		echo('开始升级ssrdownload...'.PHP_EOL);
+		Job::updatedownload();
+		echo('升级ssrdownload结束'.PHP_EOL);
+
+		echo('开始升级QQWry...'.PHP_EOL);
+		$xcat->initQQWry();
+		echo('升级QQWry结束'.PHP_EOL);
 
 		echo(PHP_EOL);
 
@@ -131,7 +136,9 @@ class Update
 	public static function old_to_new($version_old)
 	{
 		if($version_old<=0){
-		
+			echo('执行升级：0 -> 1');
+			$conn=mysqli_connect(Config::get('db_host'),Config::get('db_username'),Config::get('db_password'),Config::get('db_database'));
+			mysqli_query($conn,'ALTER TABLE user ADD discord BIGINT NULL AFTER telegram_id');
 		}
 	}
 }

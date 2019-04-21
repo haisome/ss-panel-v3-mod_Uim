@@ -15,7 +15,7 @@ class Mailgun extends Base
     public function __construct()
     {
         $this->config = $this->getConfig();
-        $this->mg = new MailgunService($this->config["key"]);
+        $this->mg = MailgunService::create($this->config["key"]);
         $this->domain = $this->config["domain"];
         $this->sender = $this->config["sender"];
     }
@@ -29,18 +29,30 @@ class Mailgun extends Base
         ];
     }
 
-    public function send($to, $subject, $text, $file)
+    public function send($to, $subject, $text, $files)
     {
-        $this->mg->sendMessage($this->domain,
-            [
+		$inline=array();
+		foreach($files as $file){
+			array_push($inline,array('filePath'=>$file, 'filename'=>basename($file)));
+		}
+		if(count($inline)==0){
+			$this->mg->messages()->send($this->domain,[
                 'from' => $this->sender,
                 'to' => $to,
                 'subject' => $subject,
                 'html' => $text
-            ],
-            [
-                'inline' => $file
-            ]
-        );
+				]
+			);
+		}
+		else{
+			$this->mg->messages()->send($this->domain,[
+                'from' => $this->sender,
+                'to' => $to,
+                'subject' => $subject,
+                'html' => $text,      
+                'inline' => $inline
+				]
+			);
+		}
     }
 }

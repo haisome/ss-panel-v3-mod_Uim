@@ -21,7 +21,7 @@
 									<div class="card-inner">
 									<div class="cardbtn-edit">
 										<div class="card-heading">账号登录密码修改</div>
-										<button class="btn btn-flat waves-attach" id="pwd-update"><span class="icon">check</span>&nbsp;</button>
+										<button class="btn btn-flat" id="pwd-update"><span class="icon">check</span>&nbsp;</button>
 									</div>
 										<div class="form-group form-group-label">
 											<label class="floating-label" for="oldpwd">当前密码</label>
@@ -49,7 +49,7 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">节点连接密码修改</div>
-												<button class="btn btn-flat waves-attach" id="ss-pwd-update"><span class="icon">check</span>&nbsp;</button>
+												<button class="btn btn-flat" id="ss-pwd-update"><span class="icon">check</span>&nbsp;</button>
 										</div>
 										
 										<p>当前连接密码：<code id="ajax-user-passwd">{$user->passwd}</code><button class="kaobei copy-text btn btn-subscription" type="button" data-clipboard-text="{$user->passwd}">点击拷贝</button></p>
@@ -57,14 +57,13 @@
 											<label class="floating-label" for="sspwd">新连接密码</label>
 											<input class="form-control maxwidth-edit" id="sspwd" type="text">
 										</div>
+										<br/>
+										<p>您需要了解的是，修改此密码同时也会变更您 V2Ray 节点的 UUID，请注意及时更新托管订阅。</p>
 									</div>
 								</div>
 							</div>
-						</div>
+						</div>                                    
                       
-                    
-                      
-
 
 						<div class="card margin-bottom-no">
 							<div class="card-main">
@@ -72,15 +71,13 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">加密方式修改</div>
-												<button class="btn btn-flat waves-attach" id="method-update"><span class="icon">check</span>&nbsp;</button>
+												<button class="btn btn-flat" id="method-update"><span class="icon">check</span>&nbsp;</button>
 										</div>
 										<p>注意：SS/SSD/SSR 支持的加密方式有所不同，请根据实际情况来进行选择</p>
-										<p>当前加密方式：<code id="ajax-user-method" data-default="method">{$user->method}</code></p>
+										<p>当前加密方式：<code id="ajax-user-method" data-default="method">[{if URL::CanMethodConnect($user->method) == 2}SS/SSD{else}SS/SSR{/if} 可连接] {$user->method}</code></p>
 										<div class="form-group form-group-label control-highlight-custom dropdown">
 											<label class="floating-label" for="method">加密方式</label>
-											<button id="method" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->method}">
-												[{if URL::CanMethodConnect($method) == 2}SS/SSD{else}SS/SSR{/if} 可连接]
-											</button>
+											<button id="method" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->method}"></button>
 											<ul class="dropdown-menu" aria-labelledby="method">
 												{$method_list = $config_service->getSupportParam('method')}
 												{foreach $method_list as $method}
@@ -99,7 +96,7 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">联络方式修改</div>
-												<button class="btn btn-flat waves-attach" id="wechat-update"><span class="icon">check</span>&nbsp;</button>
+												<button class="btn btn-flat" id="wechat-update"><span class="icon">check</span>&nbsp;</button>
 										</div>
 										<p>当前联络方式：
 										<code id="ajax-im" data-default="imtype">
@@ -118,23 +115,26 @@
 										{if $user->im_type==4}
 										Telegram
 										{/if}
-										{$user->im_value}
+
+										{if $user->im_type==5}
+										Discord
+										{/if}
 										</code>
+										</p>
+										<p>当前联络方式账号：
+										<code>{$user->im_value}</code>
 										</p>
 										<div class="form-group form-group-label control-highlight-custom dropdown">
 											<label class="floating-label" for="imtype">选择您的联络方式</label>
 											<button class="form-control maxwidth-edit" id="imtype" data-toggle="dropdown" value="{$user->im_type}">
-												{* <option></option>
-												<option value="1">微信</option>
-												<option value="2">QQ</option>
-												<option value="3">Google+</option>
-												<option value="4">Telegram</option> *}
+
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="imtype">
                                                 <li><a href="#" class="dropdown-option" onclick="return false;" val="1" data="imtype">微信</a></li>
                                                 <li><a href="#" class="dropdown-option" onclick="return false;" val="2" data="imtype">QQ</a></li>
                                                 <li><a href="#" class="dropdown-option" onclick="return false;" val="3" data="imtype">Facebook</a></li>
                                                 <li><a href="#" class="dropdown-option" onclick="return false;" val="4" data="imtype">Telegram</a></li>
+                                                <li><a href="#" class="dropdown-option" onclick="return false;" val="5" data="imtype">Discord</a></li>
 											</ul>
 										</div>
 
@@ -155,16 +155,14 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">协议&混淆设置</div>
-												<button class="btn btn-flat waves-attach" id="ssr-update"><span class="icon">check</span>&nbsp;</button>
+												<button class="btn btn-flat" id="ssr-update"><span class="icon">check</span>&nbsp;</button>
 										</div>
-										<p>当前协议：<code id="ajax-user-protocol" data-default="protocol">{$user->protocol}</code></p>
+										<p>当前协议：<code id="ajax-user-protocol" data-default="protocol">[{if URL::CanProtocolConnect($user->protocol) == 3}SS/SSD/SSR{else}SSR{/if} 可连接] {$user->protocol}</code></p>
 										<p>注意1：如果需要兼容 SS/SSD 请设置为 origin 或选择带_compatible的兼容选项</p>
 										<p>注意3：auth_chain 系为实验性协议，可能造成不稳定或无法使用，开启前请询问是否支持</p>
 										<div class="form-group form-group-label control-highlight-custom dropdown">
 											<label class="floating-label" for="protocol">协议</label>
-											<button id="protocol" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->protocol}">
-												[{if URL::CanProtocolConnect($protocol) == 3}SS/SSD/SSR{else}SSR{/if} 可连接]
-											</button>
+											<button id="protocol" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->protocol}"></button>
 											<ul class="dropdown-menu" aria-labelledby="protocol">
 												{$protocol_list = $config_service->getSupportParam('protocol')}
 												{foreach $protocol_list as $protocol}
@@ -176,15 +174,13 @@
 									</div>
 
 									<div class="card-inner">
-										<p>当前混淆方式：<code id="ajax-user-obfs" data-default="obfs">{$user->obfs}</code></p>
+										<p>当前混淆方式：<code id="ajax-user-obfs" data-default="obfs">[{if URL::CanObfsConnect($user->obfs) >= 3}SS/SSD/SSR{elseif URL::CanObfsConnect($user->obfs) == 1}SSR{else}SS/SSD{/if} 可连接] {$user->obfs}</code></p>
 										<p>注意1：如果需要兼容 SS/SSD 请设置为 plain 或选择带_compatible的兼容选项</p>
 										<p>注意2：SS/SSD 和 SSR 支持的混淆类型有所不同，simple_obfs_* 为 SS/SSD 的混淆方式，其他为 SSR 的混淆方式</p>
 										<p>注意3：如果使用 SS/SSD 作为客户端，请确保自己知道如何下载并使用混淆插件</p>
 										<div class="form-group form-group-label control-highlight-custom dropdown">
 											<label class="floating-label" for="obfs">混淆方式</label>
-											<button id="obfs" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->obfs}">
-												[{if URL::CanObfsConnect($obfs) >= 3}SS/SSD/SSR{else}{if URL::CanObfsConnect($obfs) == 1}SSR{else}SS/SSD{/if}{/if} 可连接]
-											</button>
+											<button id="obfs" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->obfs}"></button>
 											<ul class="dropdown-menu" aria-labelledby="obfs">
 											{$obfs_list = $config_service->getSupportParam('obfs')}
 											{foreach $obfs_list as $obfs}
@@ -218,7 +214,7 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">主题修改</div>
-												<button class="btn btn-flat waves-attach" id="theme-update"><span class="icon">check</span>&nbsp;</button>
+												<button class="btn btn-flat" id="theme-update"><span class="icon">check</span>&nbsp;</button>
 										</div>
 										<p>当前主题：<code data-default="theme">{$user->theme}</code></p>
 										<div class="form-group form-group-label control-highlight-custom dropdown">
@@ -247,7 +243,7 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">IP解封</div>
-												<button class="btn btn-flat waves-attach" id="unblock"><span class="icon">not_interested</span>&nbsp;</button>
+												<button class="btn btn-flat" id="unblock"><span class="icon">not_interested</span>&nbsp;</button>
 										</div>
 										<p>当前状态：<code id="ajax-block">{$Block}</code></p>
 
@@ -264,7 +260,7 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">每日邮件接收设置</div>
-												<button class="btn btn-flat waves-attach" id="mail-update"><span class="icon">check</span>&nbsp;</button>
+												<button class="btn btn-flat" id="mail-update"><span class="icon">check</span>&nbsp;</button>
 										</div>
 										<p class="card-heading"></p>
 										<p>当前设置：<code id="ajax-mail" data-default="mail">{if $user->sendDailyMail==1}发送{else}不发送{/if}</code></p>
@@ -299,8 +295,7 @@
 										<div class="form-group form-group-label control-highlight-custom dropdown">
 											<label class="floating-label" for="ga-enable">验证设置</label>
 											<button type="button" id="ga-enable" class="form-control maxwidth-edit" data-toggle="dropdown" value="{$user->ga_enable}">
-												{* <option value="0">不要求</option>
-												<option value="1">要求验证</option> *}
+
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="ga-enable">
 												<li><a href="#" class="dropdown-option" onclick="return false;" val="0" data="ga-enable">不要求</a> </li>
@@ -342,7 +337,7 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">重置端口</div>
-												<button class="btn btn-flat waves-attach" id="portreset"><span class="icon">autorenew</span>&nbsp;</button>
+												<button class="btn btn-flat" id="portreset"><span class="icon">autorenew</span>&nbsp;</button>
 										</div>
 										<p>对号码不满意？来摇号吧～！</p>
 										<p>随机更换一个端口使用，价格：<code>{$config['port_price']}</code>元/次</p>
@@ -355,13 +350,13 @@
 									<div class="card-inner">
 										<div class="cardbtn-edit">
 												<div class="card-heading">钦定端口</div>
-												<button class="btn btn-flat waves-attach" id="portspecify"><span class="icon">call_made</span>&nbsp;</button>
+												<button class="btn btn-flat" id="portspecify"><span class="icon">call_made</span>&nbsp;</button>
 										</div>
 										<p>不想摇号？来钦定端口吧～！</p>
 										<p>价格：<code>{$config['port_price_specify']}</code>元/次</p>
 										<p>端口范围：<code>{$config['min_port']}～{$config['max_port']}</code></p>
 										<div class="form-group form-group-label">
-											<label class="floating-label" for="port-specify">在这输入想钦定的号</label>
+											<label class="floating-label" for="port-specify">在这输入想钦定的端口号</label>
 											<input class="form-control maxwidth-edit" id="port-specify" type="num">
 										</div>
 									</div>
@@ -372,52 +367,48 @@
 						</div>
 						{/if}
 
-						<div class="card margin-bottom-no">
-							<div class="card-main">
-								<div class="card-inner">
-									<div class="card-inner">
-										<div class="cardbtn-edit">
-												<div class="card-heading">自定义规则</div>
-												<button class="btn btn-flat waves-attach" id="setpac"><span class="icon">settings</span>&nbsp;</button>
-										</div>
-										<p>适用于ACL/PAC/Surge</p>
-										<p>格式参看<a href="https://adblockplus.org/zh_CN/filters">撰写 Adblock Plus 过滤规则</a></p>
-										<p>IP 段请使用 |127.0.0.0/8 类似格式表示</p>
-										<div class="form-group form-group-label control-highlight-custom">
-											<label class="floating-label" for="pac">规则书写区</label>
-											<code contenteditable="true" class="form-control maxwidth-edit" id="pac">{$user->pac}</code>
-										</div>
-
-									</div>
-					
-								</div>
-							</div>
-						</div>
-
-						{if $config['enable_telegram'] == 'true'}
+						{if $config['enable_telegram'] == 'true' || $config['enable_discord'] == 'true'}
 						<div class="card margin-bottom-no">
 							<div class="card-main">
 								<div class="card-inner">
 									<div class="card-inner">
 									{if $user->telegram_id != 0}
 										<div class="cardbtn-edit">
-												<div class="card-heading">Telegram 绑定</div>
-												<div><a class="btn btn-flat btn-brand-accent waves-attach" href="/user/telegram_reset"><span class="icon">not_interested</span>&nbsp;</a></div>
-										</div>{/if}
-                                      {if $user->telegram_id == 0}
-										<p>Telegram 添加机器人账号 <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a>，拍下下面这张二维码发给它。</p>
+											<div class="card-heading">Telegram 绑定</div>
+											<div><a class="btn btn-flat btn-brand-accent" href="/user/telegram_reset"><span class="icon">not_interested</span>&nbsp;</a></div>
+										</div>
+									{/if}
+									{if $user->discord != 0}
+										<div class="cardbtn-edit">
+											<div class="card-heading">Discord 绑定</div>
+											<div><a class="btn btn-flat btn-brand-accent" href="/user/discord_reset"><span class="icon">not_interested</span>&nbsp;</a></div>
+										</div>
+									{/if}
+
+                                    {if $user->telegram_id == 0 || $user->discord == 0}
+										<p>复制保存下方的二维码图片（有效期10分钟，超时请刷新本页面以重新获取，每张二维码只能使用一次）</p>
+										{if $user->telegram_id == 0}
+											<p>私聊发给 Telegram 机器人 <a href="https://t.me/{$telegram_bot}">@{$telegram_bot}</a> 以绑定 Telegram</p>
+										{/if}
+										{if $user->discord == 0}
+											<p>私聊发给 Discord 机器人 以绑定 Discord</p>
+										{/if}
+									{/if}
 										<div class="form-group form-group-label">
 											<div class="text-center">
 												<div id="telegram-qr" class="qr-center"></div>
-												{elseif $user->telegram_id != 0}
-												当前绑定Telegram账户：<a href="https://t.me/{$user->im_value}">@{$user->im_value}</a>
+												{if $user->telegram_id != 0}
+													<p>当前绑定Telegram账户：<a href="https://t.me/{$user->im_value}">@{$user->im_value}</a></p>
 												{/if}
-									        </div>
-									    </div>
-								    </div>
-							    </div>
-						    </div>
-					    </div>
+												{if $user->discord != 0}
+													<p>当前绑定Telegram账户：{$user->im_value}</p>
+												{/if}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						{/if}
 					
 
@@ -568,15 +559,21 @@ $(".copy-text").click(function () {
 
 <script>
 	var ga_qrcode = '{$user->getGAurl()}',
-        qrcode1 = new QRCode(document.getElementById("ga-qr"));
+	qrcode1 = new QRCode(document.getElementById("ga-qr"));
+	
     qrcode1.clear();
     qrcode1.makeCode(ga_qrcode);
 
-	{if $config['enable_telegram'] == 'true'}
-	var telegram_qrcode = 'mod://bind/{$bind_token}',
-        qrcode2 = new QRCode(document.getElementById("telegram-qr"));
-    qrcode2.clear();
-    qrcode2.makeCode(telegram_qrcode);
+	{if $config['enable_telegram'] == 'true' || $config['enable_discord'] == 'true'}
+
+	var telegram_qrcode = 'mod://bind/{$bind_token}';
+
+	if ($$.getElementById("telegram-qr")) {
+		let qrcode2 = new QRCode(document.getElementById("telegram-qr"));
+		qrcode2.clear();
+		qrcode2.makeCode(telegram_qrcode);
+	}
+
 	{/if}
 </script>
 
